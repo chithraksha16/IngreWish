@@ -2,6 +2,7 @@ import express,{Express} from 'express'
 import dotenv from 'dotenv'
 import { connectDB } from './libs/db';
 import authRouter from  './routes/auth.routes'
+import recipeRouter from './routes/recipe.route'
 import cookieParser from 'cookie-parser';
 
 
@@ -12,7 +13,10 @@ const PORT:string | number=process.env.PORT || 3000;
 
 app.use(express.json())
 app.use(cookieParser())
+
+
 app.use('/api/auth',authRouter)
+app.use('/api/recipe',recipeRouter)
 
 
 const startServer=async():Promise<void>=>{

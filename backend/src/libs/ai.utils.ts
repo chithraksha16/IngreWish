@@ -30,7 +30,7 @@ Return a JSON object in this format:
 `;
 
 const completion = await genai.models.generateContent({
-    model: "gemini-pro",
+    model: "gemini-2.0-flash",
     contents: [
     {
         role: "user",
