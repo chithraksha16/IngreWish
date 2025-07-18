@@ -94,11 +94,9 @@ export const logout=(req:Request,res:Response)=>{
     }
 }
 
-interface AuthentictedUserRequest extends Request{
-    user?:IUser
-}
 
-export const checkAuth=(req:AuthentictedUserRequest,res:Response):void=>{
+
+export const checkAuth=(req:Request,res:Response):void=>{
     try{
         res.status(200).json(req.user)
     }   
