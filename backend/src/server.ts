@@ -4,6 +4,7 @@ import { connectDB } from './libs/db';
 import authRouter from  './routes/auth.routes'
 import recipeRouter from './routes/recipe.route'
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 
 dotenv.config();
@@ -13,6 +14,11 @@ const PORT:string | number=process.env.PORT || 3000;
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({
+    origin:'https://localhost:5173',
+    methods:["GET","POST","DELETE","PUT"],
+    credentials:true
+}))
 
 
 app.use('/api/auth',authRouter)
