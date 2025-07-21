@@ -16,7 +16,7 @@ export  const useAuthStore=create<User>((set)=>({
 
     checkAuth:async ()=>{
         try{
-            const res=await axiosInstance.get('/checkAuth')
+            const res=await axiosInstance.get('/auth/checkAuth')
             set({authUser:res.data})
         }
         catch(error:any){
@@ -39,7 +39,7 @@ export  const useAuthStore=create<User>((set)=>({
         toast.error(error.response?.data?.message)
         }
         finally{
-           
+        
         }
     },
     login:async ()=>{}

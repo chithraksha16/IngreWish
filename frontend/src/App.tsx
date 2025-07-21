@@ -18,8 +18,8 @@ function App() {
         <Route path='/' element={<Onboard/>}/>
         <Route path='/recipe' element={<Recipe/>}/>
         <Route path='/saved-recipe'element={<SavedRecipe/>}/>
-        <Toaster/>
       </Routes>
+      <Toaster/>
     </>
   )
 }

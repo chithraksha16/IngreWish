@@ -1,7 +1,7 @@
 import {motion} from 'motion/react'
 const Onboard = () => {
   return (
-    <div className=" w-full h-screen bg-radial-[at_50%_90%] from-indigo-900 from-20% to-black pt-14 flex items-center justify-center">
+    <div className=" w-full h-screen bg-radial-[at_50%_90%] from-indigo-900 from-20% to-black  flex items-center justify-center">
         <motion.div
         initial={{opacity:0,y:20}}
         animate={{opacity:1,y:0}}
