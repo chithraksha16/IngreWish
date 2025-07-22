@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useAuthStore } from "../store/useAuthStore"
 const Navbar = () => {
 
-const {authUser}=useAuthStore();
+const {authUser,logout}=useAuthStore();
 
 
   return (
@@ -13,9 +13,9 @@ const {authUser}=useAuthStore();
           <h1 className="text-xl font-bold">IngreWish</h1>
         </div>
         {authUser ?(
-        <div className="hidden gap-4">
+        <div className="flex gap-4 sm:text-sm text-xs">
           <Link className="px-4 py-1 border rounded" to='/saved-recipe'> Saved Recipe</Link>
-          <Link className="px-4 py-1" to='/logout'>Logout</Link>
+          <button onClick={logout} className="px-4 py-1">Logout</button>
         </div>
         ):(
         <div className="flex gap-4 sm:text-sm text-xs">

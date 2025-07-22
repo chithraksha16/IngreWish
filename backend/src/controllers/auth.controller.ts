@@ -98,6 +98,11 @@ export const logout=(req:Request,res:Response)=>{
 
 export const checkAuth=(req:Request,res:Response):void=>{
     try{
+        if (!req.user) {
+        res.status(401).json({ message: "Not authenticated" });
+        return; 
+    }
+
         res.status(200).json(req.user)
     }   
     catch(error:any){

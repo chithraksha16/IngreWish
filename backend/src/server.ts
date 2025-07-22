@@ -1,4 +1,4 @@
-import express,{Express} from 'express'
+import express,{Express,Request,Response} from 'express'
 import dotenv from 'dotenv'
 import { connectDB } from './libs/db';
 import authRouter from  './routes/auth.routes'
@@ -9,20 +9,25 @@ import cors from 'cors';
 
 dotenv.config();
 const app:Express=express();
-const PORT:string | number=process.env.PORT || 3000;
+const PORT:number=parseInt(process.env.PORT || "3000",10);
 
 
-app.use(express.json())
 app.use(cookieParser())
+app.use(express.json())
 app.use(cors({
-    origin:'https://localhost:5173',
-    methods:["GET","POST","DELETE","PUT"],
+    origin:'http://localhost:5173',
     credentials:true
 }))
 
 
 app.use('/api/auth',authRouter)
 app.use('/api/recipe',recipeRouter)
+
+
+app.get("/test-cookie", (req:Request, res:Response) => {
+  console.log("Cookies:", req.cookies); // Should log { token: "..." }
+res.json({ cookies: req.cookies });
+});
 
 
 const startServer=async():Promise<void>=>{
