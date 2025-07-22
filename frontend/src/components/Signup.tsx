@@ -1,10 +1,8 @@
 import { motion } from "motion/react"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useAuthStore } from "../store/useAuthStore"
 const Signup = () => {
 
-  const navigate=useNavigate()
   const {signup}=useAuthStore();
 
 
@@ -39,9 +37,6 @@ const Signup = () => {
       email:'',
       password:''
     })
-    navigate('/recipe')
-    
-
   }
 
 
