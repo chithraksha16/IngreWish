@@ -37,7 +37,7 @@ function App() {
         <Route path='/signup' element={!authUser ? <Signup/>:<Navigate to="/recipe"/>}/>
         <Route path='/' element={!authUser ? <Onboard/>:<Navigate to="/recipe"/>}/>
         <Route path='/recipe' element={<Recipe/>}/>
-        <Route path='/saved-recipe'element={<SavedRecipe/>}/>
+        <Route path='/saved-recipe'element={authUser ? <SavedRecipe/>:<Navigate to="/recipe"/>}/>
       </Routes>
       <Toaster/>
     </>
