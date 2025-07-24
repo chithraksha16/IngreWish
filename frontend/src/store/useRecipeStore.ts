@@ -3,7 +3,7 @@ import { axiosInstance } from "../libs/axios";
 import toast from "react-hot-toast";
 
 type recipeVar={
-    id:string,
+    _id:string,
     user:string,
     input:string,
     taste:string,
@@ -12,11 +12,18 @@ type recipeVar={
     calories:number,
     protein:number,
     missingItems:string[],
-    createdAt:Date
+    createdAt:string
+}
+
+type saveRecipeVar={
+    _id:string,
+    user:string,
+    recipe:recipeVar[],
+    createdAt:string
 }
 
 const initialRecipe: recipeVar = {
-  id: "89yyy1",
+  _id: "6880de46a57c43923ce16662",
   user: "72t8611",
   input: "chicken, onion, turmeric, powder, chilly, coconut, soya, sauce, vinegar, flour",
   taste: "spicy and creamy and rich",
@@ -32,18 +39,22 @@ const initialRecipe: recipeVar = {
   calories: 123,
   protein: 24,
   missingItems: ["cardamom","saffron","ginger","garlic","seed"],
-  createdAt: new Date("2025-12-12"),
+  createdAt:"2025-12-12",
 };
 
 type recipeVariable={
-    recipe:recipeVar | null
+    recipe:recipeVar | null,
+    savedRecipe:saveRecipeVar[] | null,
     setRecipe:(addrecipe:recipeVar)=>void,
     genRecipe:(input:string,taste:string)=>Promise<void>
+    saveRecipe:(recipeId:string)=>Promise<void>
+    getSavedRecipe:()=>Promise<void>
 
 }
 
 export const useRecipeStore=create<recipeVariable>((set)=>({
     recipe:initialRecipe,
+    savedRecipe:null,
     setRecipe:(addrecipe)=>set({recipe:addrecipe}),
 
     genRecipe:async(input,taste)=>{
@@ -55,6 +66,28 @@ export const useRecipeStore=create<recipeVariable>((set)=>({
             console.error("Error generating recipe",error.message)
             toast.error(error.response?.data?.message ||"Error generating recipe")
         }
-    }
+    },
+
+    saveRecipe:async(recipeId)=>{
+        try{
+            const res=await axiosInstance.post(`/recipe/saveRecipe/${recipeId}`)
+            console.log(res.data)
+            toast.success(res.data.message)
+        }
+        catch(error:any){
+            console.error("Error Recipe saving",error.message)
+            toast.error(error.response?.data?.message ||"recipe not Saved")
+        }
+    },
+    getSavedRecipe:async()=>{
+        try{
+            const res=await axiosInstance.get('/recipe/getSavedRecipe')
+            set({savedRecipe:res.data})
+            console.log(res.data)
+        }
+        catch(error:any){
+            console.error("Error fetching Recipe",error.message)
+        }
+    },
 
 }))

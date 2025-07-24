@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useRecipeStore } from "../store/useRecipeStore"
 import Badge from "./ui/Badge";
 const Recipe = () => {
-  const { genRecipe, recipe } = useRecipeStore();
+  const { genRecipe, recipe, saveRecipe } = useRecipeStore();
 
   const [formData, setFormData] = useState({
     input: "",
@@ -128,7 +128,7 @@ const Recipe = () => {
                 )}
               </div>
               <div className="flex justify-center mt-10">
-                <button className="text-sm border border-gray-800 px-3 py-2 rounded-md flex items-center gap-2 mt-1">
+                <button onClick={()=>saveRecipe(recipe._id)} className="text-sm border border-gray-800 px-3 py-2 rounded-md flex items-center gap-2 mt-1">
               <Import size={16} />
               Save Recipe
               </button>
