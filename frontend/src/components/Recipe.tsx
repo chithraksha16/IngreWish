@@ -1,14 +1,26 @@
 import { ChefHat,Import } from "lucide-react"
-import { useState } from "react"
+import { useState,useRef } from "react"
+import {motion} from 'framer-motion'
 import { useRecipeStore } from "../store/useRecipeStore"
 import Badge from "./ui/Badge";
-const Recipe = () => {
-  const { genRecipe, recipe, saveRecipe } = useRecipeStore();
 
-  const [formData, setFormData] = useState({
+const Recipe = () => {
+  const { genRecipe, recipe, saveRecipe,isRecipeLoading } = useRecipeStore();
+
+
+
+
+
+  type formVar={
+    input:string,
+    taste:string,
+  }
+  const [formData, setFormData] = useState<formVar>({
     input: "",
     taste: ""
   });
+
+  const recipeRef=useRef<HTMLDivElement | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
@@ -22,6 +34,11 @@ const Recipe = () => {
   const genrateRecipe = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     await genRecipe(formData.input, formData.taste);
+    
+    setTimeout(() => {
+      recipeRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
+    
   };
 
   return (
@@ -84,13 +101,19 @@ const Recipe = () => {
       </div>
 
       <div className="flex justify-center mt-7">
-        <div className="w-full max-w-2xl bg-slate-950 rounded-lg text-white p-7 mx-1">
-          {recipe ? (
-            <div className=" space-y-4 p-5 rounded-lg">
+        <div className="w-full max-w-2xl bg-slate-950 rounded-lg text-white p-7 mx-1" ref={recipeRef}>
+          {isRecipeLoading ? (
+            <div className="text-center text-gray-400 sm:text-md text-sm animate-pulse">Generating Recipe....</div>
+            ):recipe ? (
+            <motion.div 
+            initial={{opacity:0,filter:"blur(8px)"}}
+            animate={{opacity:1,filter:"blur(0px)"}}
+            transition={{duration:0.6 ,ease:"easeOut"}}
+            className=" space-y-4 p-5 rounded-lg">
               <div>
                 <h3 className="text-center text-lg mb-4">Generated Recipe</h3>
                 <p className="sm:text-md text-sm">
-                  You have ingredients: {recipe.input} and your
+                  You have ingredients  {recipe.input} and your
                   taste preference is {recipe.taste}
                 </p>
                 <h2 className="text-lg font-semibold sm:mt-6 mt-3">"{recipe.title}"</h2>
@@ -99,11 +122,30 @@ const Recipe = () => {
               <div>
                 <h3 className="font-semibold text-lg text-teal-400 py-1">Instructions :</h3>
                 {Array.isArray(recipe.instruction) && recipe.instruction.length > 0 ? (
-                  <ol className="list-decimal list-inside space-y-2">
+                  <motion.ol
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                      hidden: {},
+                      visible: {
+                      transition: {
+                        staggerChildren: 0.1,
+                      },
+                      },
+                  }} 
+                  className="list-decimal list-inside space-y-2">
                     {recipe.instruction.map((step, idx) => (
-                    <div className="inline-flex gap-1 text-sm sm:text-xs">Step<li key={idx}> {step}</li></div>
+                    <motion.li
+                    className="text-sm"
+                    variants={{
+                    hidden: { opacity: 0, x: -10 },
+                    visible: { opacity: 1, x: 0 },
+                    }}
+                    key={idx}>
+                      Step{idx+1} {step}
+                      </motion.li>
                     ))}
-                  </ol>
+                  </motion.ol>
                 ) : (
                   <p className="text-sm text-gray-400">No instructions provided.</p>
                 )}
@@ -134,7 +176,7 @@ const Recipe = () => {
               </button>
 
               </div>
-            </div>
+            </motion.div>
           ) : (
             <p className="text-center text-gray-400">Recipe not yet generated</p>
           )}

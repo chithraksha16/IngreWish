@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import { motion } from "framer-motion"
 import { useState } from "react"
 import { useAuthStore } from "../store/useAuthStore"
 const Signup = () => {

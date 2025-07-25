@@ -22,27 +22,9 @@ type saveRecipeVar={
     createdAt:string
 }
 
-const initialRecipe: recipeVar = {
-  _id: "687a558db2d836a313bd0a8f",
-  user: "72t8611",
-  input: "chicken, onion, turmeric, powder, chilly, coconut, soya, sauce, vinegar, flour",
-  taste: "spicy and creamy and rich",
-  title: "Chicken Biryani with kebab",
-  instruction: [
-    "Marinate the chicken with spices and let it rest Cook the rice and layer it with chicken to make .",
-    "Cook the rice and layer it with chicken to make biryani.",
-    "Marinate the chicken with spices and let it rest.",
-    "Cook the rice and layer it with chicken to make biryani.",
-    "Marinate the chicken with spices and let it rest.",
-    "Cook the rice and layer it with chicken to make biryani."
-  ],
-  calories: 123,
-  protein: 24,
-  missingItems: ["cardamom","saffron","ginger","garlic","seed"],
-  createdAt:"2025-12-12",
-};
 
 type recipeVariable={
+    isRecipeLoading:boolean,
     recipe:recipeVar | null,
     savedRecipe:saveRecipeVar[] | null,
     setRecipe:(addrecipe:recipeVar)=>void,
@@ -54,11 +36,13 @@ type recipeVariable={
 }
 
 export const useRecipeStore=create<recipeVariable>((set)=>({
-    recipe:initialRecipe,
+    isRecipeLoading:false,
+    recipe:null,
     savedRecipe:null,
     setRecipe:(addrecipe)=>set({recipe:addrecipe}),
 
     genRecipe:async(input,taste)=>{
+        set({isRecipeLoading:true})
         try{
             const res=await axiosInstance.post('/recipe/recipe',{input,taste})
             set({recipe:res.data.recipe})
@@ -66,6 +50,9 @@ export const useRecipeStore=create<recipeVariable>((set)=>({
         catch(error:any){
             console.error("Error generating recipe",error.message)
             toast.error(error.response?.data?.message ||"Error generating recipe")
+        }
+        finally{
+            set({isRecipeLoading:false})
         }
     },
 

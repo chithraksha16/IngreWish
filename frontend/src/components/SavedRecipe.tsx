@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRecipeStore } from "../store/useRecipeStore";
-
+import {motion} from 'framer-motion'
 const SavedRecipe = () => {
   const { getSavedRecipe, savedRecipe, deleteSavedRecipe } = useRecipeStore();
 
@@ -24,8 +24,12 @@ const SavedRecipe = () => {
       <div className="flex flex-col items-center gap-4 mt-6">
         {savedRecipe && savedRecipe.length > 0 ? (
           savedRecipe.flatMap((save) =>
-            save.recipe.map((rec) => (
-              <div
+            save.recipe.map((rec,idx) => (
+              <motion.div
+              initial={{opacity:0,filter:"blur(8px)",scale:0.75}}
+              whileInView={{opacity:1,filter:"blur(0px)",scale:1}}
+              viewport={{once:true}}
+              transition={{duration:0.2,ease:"easeOut",delay:idx*0.1}}
                 key={rec._id}
                 className="w-full max-w-4xl bg-white/10 text-white p-8 rounded-xl shadow-md"
               >
@@ -57,7 +61,7 @@ const SavedRecipe = () => {
               <div className="flex justify-center py-5">
                 <button onClick={()=>deleteSavedRecipe(save._id)} className="px-4 py-1 text-sm border border-gray-700 text-white hover:text-red-500 rounded-lg" >Delete</button>
               </div>
-              </div>
+              </motion.div>
 
             ))
           )
