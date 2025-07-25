@@ -27,7 +27,7 @@ const Recipe = () => {
   return (
     <div className="w-full min-h-screen bg-radial-[at_50%_70%] from-indigo-950 from-25% to-black pb-10">
       <div className="flex justify-center">
-        <div className="w-full max-w-2xl mt-15 bg-slate-950 backdrop-blur-2xl rounded-lg h-fit py-8 border border-gray-800 text-white">
+        <div className="w-full max-w-2xl mt-15 bg-slate-950 backdrop-blur-2xl rounded-lg h-fit py-8 border border-gray-800 text-white ">
           <div className="text-center space-y-2 py-4">
             <h1 className="text-xl">
               Recipe Generator{" "}
@@ -84,12 +84,12 @@ const Recipe = () => {
       </div>
 
       <div className="flex justify-center mt-7">
-        <div className="w-full max-w-2xl bg-slate-950 rounded-lg text-white p-7">
+        <div className="w-full max-w-2xl bg-slate-950 rounded-lg text-white p-7 mx-1">
           {recipe ? (
             <div className=" space-y-4 p-5 rounded-lg">
               <div>
                 <h3 className="text-center text-lg mb-4">Generated Recipe</h3>
-                <p className="text-md">
+                <p className="sm:text-md text-sm">
                   You have ingredients: {recipe.input} and your
                   taste preference is {recipe.taste}
                 </p>
@@ -101,7 +101,7 @@ const Recipe = () => {
                 {Array.isArray(recipe.instruction) && recipe.instruction.length > 0 ? (
                   <ol className="list-decimal list-inside space-y-2">
                     {recipe.instruction.map((step, idx) => (
-                    <div className="inline-flex gap-1">Step<li key={idx}> {step}</li></div>
+                    <div className="inline-flex gap-1 text-sm sm:text-xs">Step<li key={idx}> {step}</li></div>
                     ))}
                   </ol>
                 ) : (
@@ -109,7 +109,7 @@ const Recipe = () => {
                 )}
               </div>
 
-              <div className="flex gap-10">
+              <div className="flex gap-10 sm:text-md text-sm ">
                 <p>Calories: <strong>{recipe.calories}kcal</strong></p>
                 <p>Protein: <strong>{recipe.protein}g</strong></p>
               </div>
@@ -117,7 +117,7 @@ const Recipe = () => {
               <div className="mt-8">
                 <h3 className="font-semibold text-red-400 mb-3">Missing Ingredients:</h3>
                 {Array.isArray(recipe.missingItems) && recipe.missingItems.length > 0 ? (
-                  <div className="flex gap-3">
+                  <div className="flex flex-wrap gap-3">
                     {recipe.missingItems.map((item, idx) => (
                     <Badge key={idx}>{item}</Badge>
                     ))}

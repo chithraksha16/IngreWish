@@ -23,7 +23,7 @@ type saveRecipeVar={
 }
 
 const initialRecipe: recipeVar = {
-  _id: "6880de46a57c43923ce16662",
+  _id: "687a558db2d836a313bd0a8f",
   user: "72t8611",
   input: "chicken, onion, turmeric, powder, chilly, coconut, soya, sauce, vinegar, flour",
   taste: "spicy and creamy and rich",
@@ -49,6 +49,7 @@ type recipeVariable={
     genRecipe:(input:string,taste:string)=>Promise<void>
     saveRecipe:(recipeId:string)=>Promise<void>
     getSavedRecipe:()=>Promise<void>
+    deleteSavedRecipe:(savedRecipeId:string)=>Promise<void>
 
 }
 
@@ -89,5 +90,18 @@ export const useRecipeStore=create<recipeVariable>((set)=>({
             console.error("Error fetching Recipe",error.message)
         }
     },
+    deleteSavedRecipe:async(savedRecipeId)=>{
+        try{
+            const res= await axiosInstance.delete(`/recipe/deleteRecipe/${savedRecipeId}`)
+            toast.success(res.data.message)
+            set((state)=>({
+                savedRecipe:state.savedRecipe?.filter((item)=>item._id !== savedRecipeId)
+            }))
+        }
+        catch(error:any){
+            console.error("Error deleting Recipe")
+            toast.error(error.response?.data?.message || "Recipe not deleted")
+        }
+    }
 
 }))
