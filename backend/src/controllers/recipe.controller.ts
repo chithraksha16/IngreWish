@@ -3,67 +3,12 @@ import Recipe from "../models/recipe.model";
 import {generateFromAi} from '../libs/ai.utils'
 import SaveRecipe from "../models/saveRecipe.model";
 
+type RecipeBody={
+    input:string,
+    taste:string
+}
 
-// interface AuthenticatedRequest extends Request{
-//     user:IUser
-// }
-
-
-// export const saveRecipe=async(req:AuthenticatedRequest,res:Response):Promise<void>=>{
-//     const {input,taste, title,instruction,calories,protein,missingItems}=req.body
-//     try{
-//     const userId=req.user._id
-//     if(!userId){
-//         res.status(400).json({message:"Unthorized no user found"})
-//         return;
-//     }
-
-//     const newRecipe=new Recipe({
-//         user:userId,
-//         input,
-//         taste,
-//         title,
-//         instruction,
-//         calories,
-//         protein,
-//         missingItems
-//     })
-
-//     await newRecipe.save()
-
-//     res.status(200).json({message:"Recipe saved Successful",recipe:newRecipe})
-//     }
-//     catch(error:any){
-//         console.error("Recipe saving Error:",error.message)
-//         res.status(500).json({message:"Internal server error"})
-//     }
-// }
-
-
-
-
-
- 
-
-// export const deleteRecipe=async(req:Request,res:Response):Promise<void>=>{
-//     try{
-//         const recipeId=req.params.id;
-//         const recipe= await Recipe.findByIdAndDelete(recipeId)
-//         if (!recipe) {
-//         res.status(404).json({ message: "Recipe not found" });
-//         return;
-//         }
-//         res.status(200).json({message:"Recipe Deleted"})
-//     }
-//     catch(error:any){
-//         console.error("Recipe deleting error",error.message)
-//         res.status(500).json({message:"Internal server error"})
-//     }
-// }
-
-
-
-export const generateRecipe=async(req:Request,res:Response)=>{
+export const generateRecipe=async(req:Request<{},{},RecipeBody>,res:Response)=>{
     const {input,taste}=req.body;
     try{
         if(!input || !taste){
@@ -85,8 +30,8 @@ export const generateRecipe=async(req:Request,res:Response)=>{
 
     res.status(200).json({ message: "Recipe generated successfully", recipe: newRecipe });
     }
-    catch(error:any){
-        console.error("GenerateRecipe error",error.message)
+    catch(error){
+        console.error("GenerateRecipe error",error)
         res.status(400).json({message:"Internal server error"})
     }
 
@@ -117,15 +62,11 @@ export const saveRecipeById=async(req:Request,res:Response):Promise<void>=>{
         await newRecipeSave.save()
 
         res.status(201).json({message:"Recipe Saved",saveRecipe:newRecipeSave})
-
     }
-    catch(error:any){
-        console.error("Saving Recipe Error",error.message)
+    catch(error){
+        console.error("Saving Recipe Error",error)
         res.status(500).json({message:"Internal server error"})
-
     }
-
-
 }
 
 
@@ -136,8 +77,8 @@ export const getSavedRecipe=async(req:Request,res:Response):Promise<void>=>{
         .populate("recipe")
         res.status(200).json(getSavedRecipe)
     }
-    catch(error:any){
-        console.error("Fectching saved recipe error",error.message);
+    catch(error){
+        console.error("Fectching saved recipe error",error);
         res.status(500).json({message:"Internal server error"})
     }
 
@@ -158,8 +99,8 @@ export const deleteRecipeSaved=async(req:Request,res:Response):Promise<void>=>{
         await savedRecipe.deleteOne();
         res.status(200).json({message:"Recipe Deleted"})
     }
-    catch(error:any){
-        console.error("Deleting error",error.message)
+    catch(error){
+        console.error("Deleting error",error)
         res.status(500).json({message:"Internal server error"})
     }
 }

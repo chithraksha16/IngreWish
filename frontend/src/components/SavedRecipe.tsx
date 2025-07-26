@@ -10,9 +10,6 @@ const SavedRecipe = () => {
 
 
 
-  
-  console.log(savedRecipe)
-
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-indigo-950 to-black pb-10">
       <div className="pt-10">

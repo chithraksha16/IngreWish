@@ -24,10 +24,6 @@ app.use('/api/auth',authRouter)
 app.use('/api/recipe',recipeRouter)
 
 
-app.get("/test-cookie", (req:Request, res:Response) => {
-  console.log("Cookies:", req.cookies); // Should log { token: "..." }
-res.json({ cookies: req.cookies });
-});
 
 
 const startServer=async():Promise<void>=>{

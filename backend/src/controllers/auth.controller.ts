@@ -1,15 +1,26 @@
 import bcrypt from 'bcryptjs'
 import { Request,Response } from 'express';
-import User, { IUser } from '../models/auth.model';
+import User from '../models/auth.model';
 import {genrateToken} from '../libs/utils'
 
 
-export const signup = async(req:Request,res:Response):Promise<void>=>{
+type SignupBody={
+    name:string,
+    email:string,
+    password:string
+}
+
+type LoginBody={
+    email:string,
+    password:string
+}
+
+export const signup = async(req:Request<{},{},SignupBody>,res:Response):Promise<void>=>{
     const {name,email,password}=req.body;
     try{
         const existingUser= await User.findOne({email})
         if(existingUser){
-        res.status(400).json("User already exists")
+        res.status(400).json({message:"User already exists"})
         return ;
         }
         if(password.length < 6){
@@ -38,8 +49,8 @@ export const signup = async(req:Request,res:Response):Promise<void>=>{
     
         })
     }
-    catch(error:any){
-        console.error("Signup Error:",error.message)
+    catch(error){
+        console.error("Signup Error:",error)
         res.status(500).json({ message: "Internal server error" });
     }
 
@@ -47,7 +58,7 @@ export const signup = async(req:Request,res:Response):Promise<void>=>{
 
 
 
-export const login=async(req:Request,res:Response):Promise<void>=>{
+export const login=async(req:Request<{},{},LoginBody>,res:Response):Promise<void>=>{
     const {email,password}=req.body
     try{
         const user= await User.findOne({email})
@@ -69,8 +80,8 @@ export const login=async(req:Request,res:Response):Promise<void>=>{
             }
         })
     }
-    catch(error:any){
-        console.error("Login Error:",error.message)
+    catch(error){
+        console.error("Login Error:",error)
         res.status(500).json({ message: "Internal server error" });
     }
 
@@ -88,8 +99,8 @@ export const logout=(req:Request,res:Response)=>{
         } )
         res.status(200).json({message:"Logout successsfully"})
     }
-    catch(error:any){
-        console.error("Logout Error:",error.message)
+    catch(error){
+        console.error("Logout Error:",error)
         res.status(500).json({ message: "Internal server error" });
     }
 }
@@ -105,8 +116,8 @@ export const checkAuth=(req:Request,res:Response):void=>{
 
         res.status(200).json(req.user)
     }   
-    catch(error:any){
-        console.error("Error during authentication check,",error.message);
+    catch(error){
+        console.error("Error during authentication check,",error);
         res.status(500).json({message:"Internal server error"});
     }
 }

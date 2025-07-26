@@ -4,9 +4,14 @@ import toast from "react-hot-toast";
 
 
 type AuthUser = {
-    id: string;
+    _id: string;
     name: string;
     email: string;
+};
+
+type AuthResponse = {
+  user: AuthUser;
+  message: string;
 };
 
 type User={
@@ -24,11 +29,11 @@ export  const useAuthStore=create<User>((set)=>({
 
     checkAuth:async ()=>{
         try{
-            const res=await axiosInstance.get("/auth/check")
+            const res=await axiosInstance.get<AuthUser>("/auth/check")
             set({authUser:res.data})
         }
-        catch(error:any){
-            console.error("Error in check Auth",error.message)
+        catch(error:unknown){
+            set({authUser:null})
         }
         finally{
             set({isCheckingAuth:false})
@@ -38,25 +43,26 @@ export  const useAuthStore=create<User>((set)=>({
 
     signup:async (name,email,password)=>{
         try{
-            const res= await axiosInstance.post("/auth/signup",{name,email,password})
+            const res= await axiosInstance.post<AuthResponse>("/auth/signup",{name,email,password})
             set(({authUser:res.data.user}))
             toast.success(res.data.message)
         }
-        catch(error:any){
-        console.error("Sigup failed",error.message)
+        catch(error:unknown){
+        const err= error as{response?:{data?:{message?:string}}}
         set({authUser:null})
-        toast.error(error.response?.data?.message || "Signup Error")
+        toast.error(err.response?.data?.message || "Signup Error")
         }
     },
 
     login:async (email,password)=>{
         try{
-            const res=await axiosInstance.post('/auth/login',{email,password})
+            const res=await axiosInstance.post<AuthResponse>('/auth/login',{email,password})
             set({authUser:res.data.user})
             toast.success(res.data.message)
         }
-        catch(error:any){
-            toast.error(error.response?.data?.message || "Login error")
+        catch(error:unknown){
+            const err= error as{response?:{data?:{message?:string}}}
+            toast.error(err.response?.data?.message || "Login error")
             set({authUser:null})
         }
     },
@@ -66,7 +72,7 @@ export  const useAuthStore=create<User>((set)=>({
         set({authUser:null})
         toast.success("Logout successful")
     }
-    catch(error:any){
+    catch(error:unknown){
         toast.error("Logout error")
     }
 

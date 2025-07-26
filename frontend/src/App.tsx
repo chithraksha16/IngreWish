@@ -19,11 +19,10 @@ function App() {
     checkAuth();
   },[checkAuth])
 
-  console.log({authUser})
 
   if(isCheckingAuth && !authUser) return (
     <div className='flex justify-center items-center h-screen'>
-      <LoaderCircle size={20} className='animate-spin' />
+      <LoaderCircle size={25} className='animate-spin' />
     </div>
   )
 
