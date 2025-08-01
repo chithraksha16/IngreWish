@@ -1,6 +1,7 @@
 import {motion} from 'framer-motion'
 import { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
+import { Link } from 'react-router-dom';
 const Login = () => {
 
   type formVariable={
@@ -68,6 +69,8 @@ const Login = () => {
           value={formData.password}
           onChange={handleChange}
           id="passwordInput" />
+
+          <p className='text-xs text-gray-400'>don't have account? <Link to={'/signup'}><span className='text-blue-500'>signup</span></Link></p>
           </div>
           <button 
           className="w-full border border-white/5 rounded-md bg-linear-to-bl from-indigo-800 to-black hover:bg-linear-to-tr hover:from-indigo-800 hover:to-black   py-1"

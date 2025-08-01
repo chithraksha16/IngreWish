@@ -21,8 +21,8 @@ function App() {
 
 
   if(isCheckingAuth && !authUser) return (
-    <div className='flex justify-center items-center h-screen'>
-      <LoaderCircle size={25} className='animate-spin' />
+    <div className='flex justify-center items-center bg-radial-[at_50%_75%] from-indigo-950 from-25% to-black h-screen'>
+      <LoaderCircle size={25} className='animate-spin text-white' />
     </div>
   )
 
