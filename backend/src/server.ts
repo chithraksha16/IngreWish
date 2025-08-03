@@ -15,7 +15,7 @@ const PORT:number=parseInt(process.env.PORT || "3000",10);
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:'https://ingre-wish.vercel.app',
     credentials:true
 }))
 
