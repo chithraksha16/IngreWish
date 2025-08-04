@@ -94,8 +94,8 @@ export const logout=(req:Request,res:Response)=>{
         res.clearCookie('token',{
             maxAge:0,
             httpOnly:true,
-            sameSite:'strict',
-            secure:process.env.NODE_ENV !== 'development'
+            sameSite:'none',
+            secure:true
         } )
         res.status(200).json({message:"Logout successsfully"})
     }
