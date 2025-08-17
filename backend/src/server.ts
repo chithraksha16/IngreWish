@@ -24,6 +24,10 @@ app.use('/api/auth',authRouter)
 app.use('/api/recipe',recipeRouter)
 
 
+app.get("/",(req:Request,res:Response)=>{
+    res.send(" Hello Ping")
+})
+
 
 
 const startServer=async():Promise<void>=>{
